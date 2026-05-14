@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Nocturna</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0a0a0f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <style>
+    :root { --bg:#0a0a0f; --card:#141420; --text:#e5e7eb; --accent1:#7c3aed; --accent2:#3b82f6; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;overflow:hidden}
+    body{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+    .app{width:100%;max-width:420px}
+    h1{font-size:2.2rem;margin-bottom:8px;background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+    p.sub{opacity:.7;margin-bottom:28px}
+    .card{background:var(--card);border:1px solid #222235;border-radius:24px;padding:28px;box-shadow:0 10px 40px rgba(0,0,0,.5);margin-bottom:20px;min-height:180px;display:flex;flex-direction:column;justify-content:center;transition:transform .2s}
+    .card:active{transform:scale(.98)}
+    #output{font-size:1.4rem;line-height:1.5;font-weight:500}
+    #tag{margin-top:12px;font-size:.9rem;opacity:.6}
+    button{width:100%;padding:18px;border:none;border-radius:16px;font-size:1.1rem;font-weight:600;color:white;background:linear-gradient(90deg,var(--accent1),var(--accent2));box-shadow:0 0 20px rgba(124,58,237,.4);cursor:pointer}
+    button:active{opacity:.9}
+    footer{position:fixed;bottom:16px;opacity:.4;font-size:.75rem}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>Nocturna</h1>
+    <p class="sub">gerador aleatório noturno</p>
+    <div class="card" id="card">
+      <div id="output">Toque no botão e receba uma missão.</div>
+      <div id="tag"></div>
+    </div>
+    <button id="gen">Gerar agora</button>
+  </div>
+  <footer>v1 • fullscreen PWA</footer>
+
+<script>
+const acoes = ["Inventar","Desenhar","Escrever","Imaginar","Mixar","Codar","Sonhar com","Fotografar","Criar","Ouvir"];
+const objetos = ["uma cidade flutuante","um monstro gentil","um beat lo-fi","uma constelação nova","um app inútil","uma receita secreta","um meme do futuro","um som de chuva","uma teoria conspiratória fofa","um portal"];
+const lugares = ["no topo de um prédio","dentro de um sonho","em Marte às 3h","num café vazio","sob neon roxo","no modo avião","entre duas músicas","no fim da internet","num quarto escuro","na última aba do navegador"];
+const tags = ["#noturno","#aleatório","#criativo","#sem-sentido","#ideia","#3am"];
+
+function gerar(){
+  const a = acoes[Math.floor(Math.random()*acoes.length)];
+  const o = objetos[Math.floor(Math.random()*objetos.length)];
+  const l = lugares[Math.floor(Math.random()*lugares.length)];
+  const t = tags[Math.floor(Math.random()*tags.length)];
+  document.getElementById('output').textContent = `${a} ${o} ${l}.`;
+  document.getElementById('tag').textContent = t;
+  // muda levemente o glow
+  const hue = Math.floor(Math.random()*60)+240;
+  document.documentElement.style.setProperty('--accent1', `hsl(${hue},80%,65%)`);
+  document.documentElement.style.setProperty('--accent2', `hsl(${hue+30},80%,60%)`);
+}
+document.getElementById('gen').onclick = gerar;
+document.getElementById('card').onclick = gerar;
+gerar();
+
+// PWA
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
